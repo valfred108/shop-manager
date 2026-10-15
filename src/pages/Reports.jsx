@@ -12,11 +12,11 @@ function Reports() {
         // map your sales to report format
         const mapped = data.map(s=>({
           id: s.id,
-          date: s.date || new Date().toLocaleDateString(),
+          date: s.date || new Date(s.createdAt || Date.now()).toLocaleDateString(),
           product: s.product || 'Unknown',
-          category: s.category || (s.product?.toLowerCase().includes('dress')||s.product?.toLowerCase().includes('cloth') ? 'Clothes' : 'Cosmetics'),
-          quantity: s.quantity || 1,
-          amount: s.amount || s.total || 0
+          category: s.category ? s.category.charAt(0).toUpperCase() + s.category.slice(1).toLowerCase() : (['dress','cloth','shirt','t-shirt','trouser','jean','skirt','blouse','top','jacket','pant'].some(k=> (product||'').toLowerCase().includes(k)) ? 'clothes' : 'cosmetics'),
+          quantity: Number(s.quantity) || 1,
+          amount: Number(s.amount || s.total) || 0
         }));
         setSalesData(mapped);
       });
